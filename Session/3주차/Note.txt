@@ -1,0 +1,33 @@
+############################################################
+Decision Tree : 각 변수를 Split의 기준으로 두어 차례차례 진행
+Classification / Regression 둘다 가능
+############################################################
+Ensemble : Bias & Variance Trade off 를 해결해 Error을 감소
+Ensemble은 Bagging, Boosting, Stacking으로 구성
+
+Bagging : Bootstrap + Aggregating
+- 데이터를 여러번 단순 임의 복원 추출하여 Decision Tree, 결과를 앙상블
+Random Forest -> Data Bagging + Feature Bagging + Decision Tree, 결과를 앙상블
+
+Boosting : Bagging과 유사, But 가중치 부여하여 진행, 즉 임의복원추출을 가중치를 부여해서 진행
+GBM : Boosting 진행 시 가중치에 Gradient Descent를 이용한다.
+XGB : GBM + 분산/병렬처리로 속도를 개선 ; Split시 일부분만 고려 ; 더미변수 이용시 좋다
+Light GBM : Loss Function이 큰 값에 집중하여 노드를 세분화
+
+Stacking : 여러 모델들의 결과값을 Averaging, Voting or 변수로 활용 하여 새로운 결과값 도출
+############################################################
+
+Lime : 결과에 대한 해석을 용이하게 해주는 알고리즘
+############################################################
+
+
+
+############################################################
+SVM (Support Vector Machine)
+
+Margin 최대로 하는 Decision Boundary
+
+Margin이 뭐야? Decision Boundary가 뭐야?
+- Margin : 결정 경계와 서포트 벡터 사이의 거리 * 2
+- Decision Boundary : Hyperplane
+

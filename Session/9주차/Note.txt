@@ -1,0 +1,25 @@
+# NLP
+Using DeepLearning : Raw Data -> Output 무엇인가 나온다.
+
+# Seq2Seq
+연속적인 정보들을 이용해서 연속적인 정보들을 뱉어내도록
+새로운 문장을 만드는 것을 할 수 있다.
+
+# RNN
+오늘은 비가 옵니다 -> 옵니다를 Output으로 내뱉을 때, 오늘은 + 비가 의 기억을 이용
+Loop 형태 (Hidden Layer 간의 교류)
+
+P.26 Output Layer 2번째 노드를 기준
+
+# LSTM
+Chain Rule -> 앞쪽의 Node 정보가 손실되어 Vanishing gradient 발생
+이를 해결하기 위해 LSTM (Long short Term - Memory)
+
+Input 2개 (vector state + hidden state) -> Input 3개 (vs + hs + Cell state)
+
+Forget Gate : 이전 상태의 정보를 얼마만큼 가져갈지
+Cell State : Forget Gate의 비율 + 현재 정보의 비율 -> Cell State 최신화
+Input Gate : Input
+
+# GRU
+Forget Gate 유지하고, Input Gate + Cell State -> Update Gate

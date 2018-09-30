@@ -1,0 +1,45 @@
+** 최영제
+- Data Split : 종속변수의 비율을 고려해서 데이터를 나누는게 좋다.
+- 과적합 : 내가 갖고 있는 데이터는 잘 맞추는데, 새로운 데이터는 잘 맞추지 못하는 경향 (Overfit)
+- P 10, 11 읽어보기
+- Test 과적합 방지하려면 무엇을 해야하나? 
+1. Validation 이용 (Hold Out)
+2. Cross Validation (일반적으로 5, 10 사용)
+어느 한쪽에 편향되어서 분석되는 결과를 방지하는 방법 중 하나
+*LOOCV (Leave one out cross validation) -> k-fold을 최대화 (데이터 개수만큼)
+
+- P19 편향-분산 Trade off
+모델이 복잡하다면 정확히 예측할 수 있지만, 분산이 커진다.
+반대로 모델이 단순하다면 분산이 작아지지만 오히려 정확한 예측을 할 수 없게 된다.
+
+
+# KNN
+임의 지정 (HyperParameter) vs 학습하며 최적화 (Parameter) * Regression : B, NN : W
+
+Distance? - 어떻게 정의하느냐에 따라서 성능차이가 난다.
+1. Euclidean
+2. Manhattan
+
+K? - 여러가지를 직접 시도해보고 정의하는 것이 좋다.
+Overfitting vs Underfitting
+
+KNN 고려사항
+변수들마다 단위 혹은 특징이 다르기 때문에 Scaling -> 1. Minmax, z-score
+
+W-knn (Weight KNN)
+
+###########################################################################
+LDA
+분류기 내 차원축소 개녕미 도입된 알고리즘
+
+# 66
+M1,m2 중심점
+S1,s2 표준편차
+
+
+###########################################################################
+
+Naive Bayes Classification -> Supervised Learning
+
+큰 카테고리로 나뉠 때 주로 이용 (1차)
+

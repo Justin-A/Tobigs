@@ -1,0 +1,103 @@
+AlexNet - first Large Scale Conv
+Input : 227*227*3
+다음 Depth : Filter의 개수
+Pooling : 그대로 줄이기만 한다.
+
+96 : 48*2 -> GPU Memory 부족으로 두개로 나눠서 학습을 진행
+1, 2, 4, 5 / 3, FC6 7 8
+
+#########################################################
+그다음으로 ZFNet -> Alexnet의 하이퍼파라미터를 Tuning과정
+#########################################################
+
+VGGNet : Small filter, Deeper Networks / 3*3 conv layer
+3*3 3개는 7*7 1개 Layer와 동일한 효과
+7*7 Layer -> 7*7은 1번 / 3*3 은 5*5/3*3/3*3 총 3번
+작은 conv layer을 많이 쓴다면 같은 면적을 볼 때 파라미터 수가 적게 필요하게 되고, 3*3을 깊게 쌓을 수 있고, 비선현성을 많이 적용할 수 있다.
+
+Memory : Fixel 개수 / Params : 학습해야할 파라미터 개수
+
+대부분의 메모리는 앞단에서 (이미지 사이즈가 줄어들지 않았기 때문에)
+파라미터는 FC에서 많이 발생
+
+#########################################################
+
+GoogLeNet : Alexnet의 1/12 수준의 파라미터
+Inception : local network topology : 1*1 conv, 3*3 conv, 5*5 conv, 3*3 pool
+4가지를 수평적으로 진행, 이 4가지를 depthwise로 concat
+
+Filter concatenation : input 사이즈보다 훨씬 더 크게
+Conv Ops -> 너무 크다
+
+문제점을 해결하기 위해
+1*1 conv : bottelneck layer -> 이를 이용하면 lower dimention으로 projection하는 의미
+
+Gradient inject하는 2가지 (Auxiliary classification outputs)
+
+#########################################################
+
+ResNet : Residual Connection (2015) -> 152 Layers
+무조건 깊게만 쌓으면 결과가 잘 나오니? No
+56-Layer / 20-Layer -> 파라미터가 많다는 것은 표현력이 많다는 것인데, 56-Layer는 파라미터가 많고, 이는 trainset에 대해 과적합일 수 있는데 오히려 에러가 높다? -> 최적화가 잘 되지 않았다.
+그렇다면 층을 깊게만 쌓는게 중요한게 아니라, 적절한 층의 잘 학습할 수 있도록 -> ResNet
+
+H(x) -> F(x) + x 로 나누어서 학습을 한다.
+3*3 2개를 거친 후 원래 x를 더해주는, 
+
+FC X (Parameter 개수 X)
+
+#########################################################
+ComputerVision Core text
+Image Classification -> Image를 적절한 conv -> FC -> Softmax
+
+Semantic Segmentation
+-> 각각 fixel을 구별 / Instance 끼리 구별할 수 없는 문제점을 발견
+Slide Window : 각 crop에 대해서 전체 fixel을 conv layer을 통과
+엄청나게 많은 계산량, 각 계산 결과를 공유하지 못해서 문제점
+Output : C (Category 개수) * H * W / Argmax가 가장 높은 값으로 추측
+Downsampling (conv만 적용해도 줄어듦, maxpool 팍팍 줄얻름) -> Upsampling (Unpooling)
+
+Unpooling : Nearest Neighbor, Bed of nails 2가지 방법
+Max Unpooling -> Maxpooling이 되는 위치를 확인하고, 그 위치 그대로 Unpooling
+위는 학습이 가능하지 않다고 볼 수 있다.
+
+학습이 가능한 Upsampling : Trnaspose Convolution
+겹치는 부분은 + (p.95)
+Conv layer을 행렬곱으로 표현할 수 있다. (p.101) 자세히 보자
+#########################################################
+Classification + Local (Localization)
+이미지에서 물체가 어디 있느냐?
+FC + Softmax -> x, y, w, h Regression을 추가하여 위치를 확인
+Softmax Loss, L2 Loss -> 2가지 로스를 적절한 하이퍼파라미터를 통해 가중합을 하여 취한다.
+#########################################################
+Object Detection
+Object Detection as Regression -> Tricky
+미리 파라미터 개수를 정할 수 없다.
+Semantic Segmentation 처럼 Slide Window를 이용
+Crop을 어떻게 정할 것인가? 물체가 어떤 사이즈, 박스가 어떤 사이즈? 다 모르지 않느냐
+이는 실용적인 task가 아니다.
+
+-> 물체가 있을 법한 곳을 2000개정도 뽑아주는 방식 (R-CNN)
+Selective search -> ROI (Regions of Interest) 물체가 있을법한 곳을 뽑아주고
+각각 CNN을 통과시켜주며 (일정한 InputSize) -> ROI에 대해 적절한 resize
+학습해야 할 경우가 너무 많다 -> 오래걸린다
+
+Fast R-CNN 전체 Image를 INPUT, conv + ROI + FC -> Softmax + Linear (Conv 1번)
+(R-CNN 은 각 crop에 대해 conv을 통과)
+Selective search에서 대부분 시간을 잡아먹느다. 이를 어떻게 해결할 수 있을까
+
+Faster R-CNN
+Fixed Function, 어떻게 이 후보를 정할지 학습하는 것이 아니라, 정해진 알고리즘을 통해 도출
+RPN 다른 CNN Architecture을 뽑아내서 물체맵을 잡아낸다.
+CNN을 통해 Feature map을 뽑아내고, 이를 RPN이 이용해서 물체를 잡아낸다.
+총 4개의 Loss (실시간에 가깝게 처리할 수 있게 되었다.)
+
+Single-Shot method : All feed forward in a single path (YOLO / SSD)
+각각에 대해서 처리를 하는 것이 아니라, 이미지를 하나의 거대한 conv을 통과시키는 과정에서 모든것을 해결하겠다는 개념, 이미지가 들어오면 Grid를 치고, 각 Grid에서 base bounding boxes를 친다, 각 bounding boxes는 5개의 값을 갖는다 (x y w h confidence(물체가 있을 확률 * IOU(Area of Overlap / Area of union (교집합/합집합) 실제 값, 예측값에 대해)
+
+#########################################################
+Instance Segmentattion
+Semantic -> Instance를 구분하지 못하는데, 이것을 극복하고자
+Segmantic segmentation + object detection
+원본 이미지에 대해 detection을 하고 box에 대해 segmentation을 하는 것
+Mask r-cnn 박스 잘치고, 분류를 잘한다.

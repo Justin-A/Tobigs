@@ -1,0 +1,42 @@
+CNN : Convolution Neural Network - 지도학습
+Convlayer - maxpooling 반복
+이미지를 만약 MLP에서이용한다면 3차원 -> 1차원을 Input : 공간정보 손실
+
+Convolution Layer : 합성곱층
+입력과 필터를 합성곱 연산을 의미 -> ConvoLved Feature 생성 (Feature Map)
+
+Feature Map : 합성곱 계산으로 생성된 Matrix
+Activation Map : Featuremap을 Activation Function을 적용한 결과
+(위 2개를 통틀어서 Feature Map이라고 보통 언급)
+
+Channel (Depth) : RGB -> Depth:3 / WB -> Depth:2, Channel : 1
+
+Filter : CNN에서 학습의 대상 (보통 3*3, 4*4 정사각 행렬)
+Convolution Layer Input Channel 과 Filter의 Depth가 동일해야한다.
+Ex) Input : 32*32*3 -> Filter : 4*4*3
+
+Filter의 Depth가 Feature Map의 Depth로 지정
+p.24 -> 32*32*3 <> 5*5*6 -> 28*28*6
+
+Stride : 필터가 입력 데이터를 순회할 간격 (필터가 움직이는 간격의 크기)
+
+Padding : Output은 크기가 작아진다. 이를 방지하기 위한 방법
+외곽에 지정된 픽셀만큼 특정 값으로 채워 넣은다. (보통 0)
+이를 통해 Output Size를 조절할 수 있고, Network가 외곽부분도 학습할 수 있다.
+
+Pooling Layer : Feature Map을 Input -> Size를 줄이거나 Attention
+(Max pooling, Average Pooling, Min Pooling)
+
+CNN -> Feature Extraction & Classifier
+
+###########################################################################
+
+GAN (Generative Adversial Networks) - 비지도학습
+데이터의 분포를 학습하는 생성모델의 일종
+2개의 신경 네트워크가 서로 경쟁하여 구현 (Generator vs Discriminator)
+
+Generator는 Discriminator를 최대한 속이려고 하고, Discriminator는 최대한 맞추려 한다.
+이를 통해 Generator는 진짜와 구별할 수 없을 정도로 잘 생성하게 된다.
+
+###########################################################################
+

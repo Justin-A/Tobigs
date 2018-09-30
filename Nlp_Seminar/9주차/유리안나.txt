@@ -1,0 +1,11 @@
+
+# 음성 인식과 음성 합성 - 김유리안나
+
+Speech to Text ; Text to Speech
+
+Audio - Spectrogram (주목) ; 음성을 숫자로 표현하기 위한 그림 (임베딩개념)
+
+음성인식의 어려움 - Speech 사람의 특성에 따라 데이터가 달라진다.
+
+음파를 숫자로 변환 (음파의 진폭을 숫자로 변화하여 Sampling)
+
